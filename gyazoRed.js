@@ -15,6 +15,11 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     }
 
     if (isGyazoImage){
-        chrome.tabs.update(tabId, {url: "https://i.gyazo.com/" + id + ".png"}, function(tab){});
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", "https://api.gyazo.com/api/oembed?url=" + url, false ); // false for synchronous request
+        xmlHttp.send( null );
+        var response = xmlHttp.responseText;
+        alert(JSON.parse(response)["url"]);
+        chrome.tabs.update(tabId, {url: JSON.parse(response)["url"]}, function(tab){});
     }
 }); 
